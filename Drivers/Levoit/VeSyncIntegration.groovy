@@ -100,7 +100,7 @@ def initialize() {
 
 private Boolean login()
 {
-    if (email == null || email == "" || password == null || password == "") {
+    if (!email || !password) {
         logDebug "Email or password not configured yet"
         return false
     }
