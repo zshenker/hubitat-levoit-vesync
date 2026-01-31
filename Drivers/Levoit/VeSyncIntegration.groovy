@@ -194,6 +194,12 @@ def Boolean updateDevices()
             sendBypassRequest(dev, command) { resp ->
                 if (checkHttpResponse("update", resp))
                 {
+                    // Check for offline device code
+                    if (resp.data.code == -11300030) {
+                        logDebug "Device ${dni} is offline (code: -11300030)"
+                        connectionStatus = "offline"
+                    }
+                    
                     def status = resp.data.result
                     if (status == null) {
                         logError "No status returned from ${method}: ${resp.data}"
