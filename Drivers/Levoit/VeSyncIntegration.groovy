@@ -227,9 +227,13 @@ private deviceType(code) {
         case "Core200S": 
         case "LAP-C201S-AUSR":
         case "LAP-C201S-WUSR":
+        case "LAP-C202S-WUSR":
             return "200S"
         case "Core300S": 
         case "LAP-C301S-WJP":
+        case "LAP-C302S-WUSB":
+        case "LAP-C301S-WAAA":
+        case "LAP-C302S-WGC":
             return "300S"
         case "Core400S": 
         case "LAP-C401S-WJP":
@@ -246,6 +250,7 @@ private deviceType(code) {
         case "Classic300S":
         case "LUH-A601S-WUSB":
         case "LUH-A601S-AUSW":
+        case "Dual200S":
         case "LUH-D301S-WUSR":
         case "LUH-D301S-WJP":
         case "LUH-D301S-WEU":
@@ -345,7 +350,7 @@ private Boolean getDevices() {
 
                         if (equip2 == null)
                         {
-                            equip2 = addChildDevice("zshenker", "Levoit Core200S Air Purifier Light", device.cid+"-nl", [name: device.deviceName + " Light", label: device.deviceName + " Light", isComponent: false]);                                                    
+                            equip2 = addChildDevice("Levoit Core200S Air Purifier Light", device.cid+"-nl", [name: device.deviceName + " Light", label: device.deviceName + " Light", isComponent: false]);                                                    
                             equip2.updateDataValue("configModule", device.configModule);
                             equip2.updateDataValue("cid", device.cid);
                             equip2.updateDataValue("uuid", device.uuid);
@@ -360,7 +365,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit Core200S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
+                            equip1 = addChildDevice("Levoit Core200S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
@@ -377,7 +382,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit Core300S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
+                            equip1 = addChildDevice("Levoit Core300S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
@@ -394,7 +399,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit Core400S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
+                            equip1 = addChildDevice("Levoit Core400S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
@@ -411,7 +416,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit Core600S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
+                            equip1 = addChildDevice("Levoit Core600S Air Purifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);                                                    
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
@@ -428,7 +433,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit Classic300S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
+                            equip1 = addChildDevice("Levoit Classic300S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
@@ -445,7 +450,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit Classic300S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
+                            equip1 = addChildDevice("Levoit Classic300S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
@@ -462,7 +467,7 @@ private Boolean getDevices() {
                         if (equip1 == null)
                         {
                             logDebug "Adding ${device.deviceName}"
-                            equip1 = addChildDevice("zshenker", "Levoit LV600S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
+                            equip1 = addChildDevice("Levoit LV600S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
                             equip1.updateDataValue("configModule", device.configModule);
                             equip1.updateDataValue("cid", device.cid);
                             equip1.updateDataValue("uuid", device.uuid);
