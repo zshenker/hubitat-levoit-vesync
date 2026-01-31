@@ -44,13 +44,6 @@
       "required": false
     },
     {
-      "id": "65bbed4f-4075-46ad-a2fc-c148e1af21e4",
-      "name": "VeSync Integration",
-      "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/VeSyncIntegration.groovy",
-      "required": true
-    },
-    {
       "id": "a659d224-0a63-4af8-ba58-9a2a83c1cf6c",
       "name": "Levoit Classic300S Humidifier",
       "namespace": "zshenker",
@@ -63,6 +56,17 @@
       "namespace": "zshenker",
       "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitLV600S.groovy",
       "required": false
+    }
+  ],
+  "apps": [
+    {
+      "id": "6afc8135-d0fe-4add-abd4-37c6d2b99024",
+      "name": "VeSync Integration",
+      "namespace": "zshenker",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/VeSyncIntegration.groovy",
+      "required": true,
+      "oauth": false,
+      "primary": false
     }
   ]
 }
