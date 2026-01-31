@@ -5,50 +5,64 @@
   "minimumHEVersion": "2.4.3.177 ",
   "dateReleased": "2026-01-31",
   "releaseNotes": "Updates to only include Levoit VeSync devices.",
-  "documentationLink": "https://github.com/zshenker/Hubitat/blob/master/Drivers/Levoit/readme.md",
-  "licenseFile": "https://raw.githubusercontent.com/zshenker/Hubitat/master/LICENSE",
+  "documentationLink": "https://github.com/zshenker/hubitat-levoit-vesync/blob/master/Drivers/Levoit/readme.md",
+  "licenseFile": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/LICENSE",
   "drivers": [
     {
       "id": "e55e1532-f00f-407b-ad00-c27077225592",
       "name": "Levoit Core200S Air Purifier Light",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/Hubitat/master/Drivers/Levoit/LevoitCore200S%20Light.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore200S%20Light.groovy",
       "required": false
     },
     {
       "id": "4467437a-8850-4a9e-9722-cbf98c984952",
       "name": "Levoit Core200S Air Purifier",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/Hubitat/master/Drivers/Levoit/LevoitCore200S.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore200S.groovy",
       "required": false
     },
     {
       "id": "9044814e-27d1-498d-a0a8-308f49002467",
       "name": "Levoit Core300S Air Purifier",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/Hubitat/master/Drivers/Levoit/LevoitCore300S.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore300S.groovy",
       "required": false
     },
     {
       "id": "a9c8ab02-abd9-4956-b000-68331d59f1df",
       "name": "Levoit Core400S Air Purifier",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/Hubitat/master/Drivers/Levoit/LevoitCore400S.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore400S.groovy",
       "required": false
     },
     {
       "id": "b7d0cbb9-3419-4c5c-8926-a90519ce929f",
       "name": "Levoit Core600S Air Purifier",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/Hubitat/master/Drivers/Levoit/LevoitCore600S.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore600S.groovy",
       "required": false
     },
     {
       "id": "65bbed4f-4075-46ad-a2fc-c148e1af21e4",
       "name": "VeSync Integration",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/Hubitat/master/Drivers/Levoit/VeSyncIntegration.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/VeSyncIntegration.groovy",
       "required": true
+    },
+    {
+      "id": "a659d224-0a63-4af8-ba58-9a2a83c1cf6c",
+      "name": "Levoit Classic300S Humidifier",
+      "namespace": "zshenker",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitClassic300S.groovy",
+      "required": false
+    },
+    {
+      "id": "9f3a908f-ba16-430a-b524-6597651f2811",
+      "name": "Levoit Core600S Air Purifier",
+      "namespace": "zshenker",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore600S.groovy",
+      "required": false
     }
   ]
 }
