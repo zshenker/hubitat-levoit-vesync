@@ -156,13 +156,7 @@ def Boolean updateDevices()
 {
     // Immediately schedule the next update -- this will keep the 
     // referesh interval as close to constant as possible.
-    runIn((int)settings.refreshInterval, updateDevices)
-
-    def command = [
-            "method": "getPurifierStatus",
-            "source": "APP",
-            "data": [:]
-        ]
+    runIn((int)settings.refreshInterval, "updateDevices")
 
     sendEvent(name: "heartbeat", value: "syncing", isStateChange: true, descriptionText: "Waiting on update from VeSync servers.")
 
@@ -172,26 +166,44 @@ def Boolean updateDevices()
             def dni = e.key
             def configModule = e.value
 
-            if (dni.endsWith("-nl")) continue;
+            if (dni.endsWith("-nl")) continue
             
             logDebug "Updating ${dni}"
 
             def dev = getChildDevice(dni)
+            
+            // Determine the appropriate status method based on device type
+            def method = "getPurifierStatus"
+            if (dev?.getTypeName()?.contains("Humidifier")) {
+                method = "getHumidifierStatus"
+            }
+            
+            def command = [
+                "method": method,
+                "source": "APP",
+                "data": [:]
+            ]
 
             sendBypassRequest(dev, command) { resp ->
                 if (checkHttpResponse("update", resp))
                 {
                     def status = resp.data.result
-                    if (status == null)
-                        logError "No status returned from getPurifierStatus: ${resp.msg}"
-                    else
-                        result = dev.update(status, getChildDevice(dni+"-nl"))
+                    if (status == null) {
+                        logError "No status returned from ${method}: ${resp.msg}"
+                    } else {
+                        // For 200S purifiers with nightlight
+                        if (dni.endsWith("-nl") == false && dev.getTypeName().contains("200S") && dev.getTypeName().contains("Purifier")) {
+                            result = dev.update(status, getChildDevice(dni+"-nl"))
+                        } else {
+                            result = dev.update(status, null)
+                        }
+                    }
                 }
             }
         }
         catch (exc)
         {
-            logError exc.toString();
+            logError exc.toString()
         }
     }
 
@@ -199,32 +211,54 @@ def Boolean updateDevices()
 
     // Schedule a call to the timeout method. This will cancel any outstanding
     // schedules.
-    runIn(5 * (int)settings.refreshInterval, timeOutLevoit)
+    runIn(5 * (int)settings.refreshInterval, "timeOutLevoit")
 }
 
 private deviceType(code) {
     switch(code)
     {
+        // Air Purifiers
         case "Core200S": 
         case "LAP-C201S-AUSR":
         case "LAP-C201S-WUSR":
-            return "200S";
+            return "200S"
         case "Core300S": 
         case "LAP-C301S-WJP":
-            return "300S";
+            return "300S"
         case "Core400S": 
         case "LAP-C401S-WJP":
         case "LAP-C401S-WUSR":
         case "LAP-C401S-WAAA":
-            return "400S";
+            return "400S"
         case "Core600S": 
         case "LAP-C601S-WUS":
         case "LAP-C601S-WUSR":
         case "LAP-C601S-WEU":
-            return "600S";
+            return "600S"
+        
+        // Humidifiers
+        case "Classic300S":
+        case "LUH-A601S-WUSB":
+        case "LUH-A601S-AUSW":
+        case "LUH-D301S-WUSR":
+        case "LUH-D301S-WJP":
+        case "LUH-D301S-WEU":
+        case "LUH-D301S-KEUR":
+            return "Classic300S"
+        case "LUH-A602S-WUSR":
+        case "LUH-A602S-WUS":
+        case "LUH-A602S-WEUR":
+        case "LUH-A602S-WEU":
+        case "LUH-A602S-WJP":
+        case "LUH-A602S-WUSC":
+            return "LV600S-A602"
+        case "LUH-A603S-WUS":
+        case "LUH-A603S-WUSR":
+        case "LUH-A603S-WEU":
+            return "LV600S"
     }
 
-    return "N/A";
+    return "N/A"
 }
 private Boolean getDevices() {
 
@@ -274,7 +308,8 @@ private Boolean getDevices() {
                         newList[device.cid] = device.configModule;
                         newList[device.cid+"-nl"] = device.configModule;
                     }
-                    else if (dtype == "400S" || dtype == "300S" || dtype == "600S") {
+                    else if (dtype == "400S" || dtype == "300S" || dtype == "600S" || 
+                             dtype == "Classic300S" || dtype == "LV600S" || dtype == "LV600S-A602") {
                         newList[device.cid] = device.configModule;
                     }
                 }
@@ -381,6 +416,57 @@ private Boolean getDevices() {
                             equip1.name = device.deviceName;
                             equip1.label = device.deviceName;
                         }                        
+                    }
+                    else if (dtype == "Classic300S")
+                    {
+                        if (equip1 == null)
+                        {
+                            logDebug "Adding ${device.deviceName}"
+                            equip1 = addChildDevice("Levoit Classic300S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
+                            equip1.updateDataValue("configModule", device.configModule);
+                            equip1.updateDataValue("cid", device.cid);
+                            equip1.updateDataValue("uuid", device.uuid);
+                        }
+                        else {
+                            // In case the device name has changed.
+                            logDebug "Updating ${device.deviceName} / " + dtype;
+                            equip1.name = device.deviceName;
+                            equip1.label = device.deviceName;
+                        }
+                    }
+                    else if (dtype == "LV600S-A602")
+                    {
+                        if (equip1 == null)
+                        {
+                            logDebug "Adding ${device.deviceName}"
+                            equip1 = addChildDevice("Levoit Classic300S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
+                            equip1.updateDataValue("configModule", device.configModule);
+                            equip1.updateDataValue("cid", device.cid);
+                            equip1.updateDataValue("uuid", device.uuid);
+                        }
+                        else {
+                            // In case the device name has changed.
+                            logDebug "Updating ${device.deviceName} / " + dtype;
+                            equip1.name = device.deviceName;
+                            equip1.label = device.deviceName;
+                        }
+                    }
+                    else if (dtype == "LV600S")
+                    {
+                        if (equip1 == null)
+                        {
+                            logDebug "Adding ${device.deviceName}"
+                            equip1 = addChildDevice("Levoit LV600S Humidifier", device.cid, [name: device.deviceName, label: device.deviceName, isComponent: false]);
+                            equip1.updateDataValue("configModule", device.configModule);
+                            equip1.updateDataValue("cid", device.cid);
+                            equip1.updateDataValue("uuid", device.uuid);
+                        }
+                        else {
+                            // In case the device name has changed.
+                            logDebug "Updating ${device.deviceName} / " + dtype;
+                            equip1.name = device.deviceName;
+                            equip1.label = device.deviceName;
+                        }
                     }
 				}                
 
