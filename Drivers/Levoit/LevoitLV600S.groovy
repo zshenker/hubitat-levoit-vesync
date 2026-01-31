@@ -220,14 +220,14 @@ def update() {
 def update(status, nightLight) {
     logDebug "update(status, nightLight)"
 
+    def connectionStatus = status.connectionStatus ?: "unknown"
+    handleEvent("connectionStatus", connectionStatus)
+
     def result = status?.result
     if (result == null) {
         logError "No status result in update"
         return
     }
-    
-    def connectionStatus = status.connectionStatus ?: "unknown"
-    handleEvent("connectionStatus", connectionStatus)
     
     updateFromStatus(result)
 }
