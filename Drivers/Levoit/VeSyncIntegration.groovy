@@ -100,6 +100,11 @@ def initialize() {
 
 private Boolean login()
 {
+    if (!email || !password) {
+        logDebug "Email or password not configured yet"
+        return false
+    }
+    
     def logmd5 = MD5(password)
 
 	def params = [
@@ -172,6 +177,7 @@ def Boolean updateDevices()
             logDebug "Updating ${dni}"
 
             def dev = getChildDevice(dni)
+            def connectionStatus = state.connectionStatusMap?.get(dni) ?: "unknown"
             
             // Determine the appropriate status method based on device type
             def method = "getPurifierStatus"
@@ -190,8 +196,11 @@ def Boolean updateDevices()
                 {
                     def status = resp.data.result
                     if (status == null) {
-                        logError "No status returned from ${method}: ${resp.msg}"
+                        logError "No status returned from ${method}: ${resp.data}"
                     } else {
+                        // Add connection status to the status object
+                        status.connectionStatus = connectionStatus
+                        
                         // For 200S purifiers with nightlight
                         if (dni.endsWith("-nl") == false && dev.getTypeName().contains("200S") && dev.getTypeName().contains("Purifier")) {
                             result = dev.update(status, getChildDevice(dni+"-nl"))
@@ -222,9 +231,13 @@ private deviceType(code) {
         case "Core200S": 
         case "LAP-C201S-AUSR":
         case "LAP-C201S-WUSR":
+        case "LAP-C202S-WUSR":
             return "200S"
         case "Core300S": 
         case "LAP-C301S-WJP":
+        case "LAP-C302S-WUSB":
+        case "LAP-C301S-WAAA":
+        case "LAP-C302S-WGC":
             return "300S"
         case "Core400S": 
         case "LAP-C401S-WJP":
@@ -241,6 +254,7 @@ private deviceType(code) {
         case "Classic300S":
         case "LUH-A601S-WUSB":
         case "LUH-A601S-AUSW":
+        case "Dual200S":
         case "LUH-D301S-WUSR":
         case "LUH-D301S-WJP":
         case "LUH-D301S-WEU":
@@ -298,20 +312,25 @@ private Boolean getDevices() {
 			if (checkHttpResponse("getDevices", resp))
 			{
                 def newList = [:]
+                def connectionStatusMap = [:]
 
 				for (device in resp.data.result.list) {
                     logDebug "Device found: ${device.deviceType} / ${device.deviceName} / ${device.macID}"
 
                     def dtype = deviceType(device.deviceType);
+                    def connStatus = device.connectionStatus ?: "unknown"
 
                     if (dtype == "200S")
                     {
                         newList[device.cid] = device.configModule;
                         newList[device.cid+"-nl"] = device.configModule;
+                        connectionStatusMap[device.cid] = connStatus;
+                        connectionStatusMap[device.cid+"-nl"] = connStatus;
                     }
                     else if (dtype == "400S" || dtype == "300S" || dtype == "600S" || 
                              dtype == "Classic300S" || dtype == "LV600S" || dtype == "LV600S-A602") {
                         newList[device.cid] = device.configModule;
+                        connectionStatusMap[device.cid] = connStatus;
                     }
                 }
                 
@@ -472,6 +491,7 @@ private Boolean getDevices() {
 				}                
 
                 state.deviceList = newList
+                state.connectionStatusMap = connectionStatusMap
 
                 runIn(5 * (int)settings.refreshInterval, "timeOutLevoit")
                 

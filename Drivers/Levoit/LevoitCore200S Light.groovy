@@ -51,6 +51,8 @@ metadata {
             capability "Switch"
             capability "Switch Level"
 
+            attribute "connectionStatus", "string"                     // Connection status (online/offline)
+
             command "setNightLight", [[name:"Night Light*", type: "ENUM", description: "Display", constraints: ["on", "off", "dim"] ] ]
 
         }
@@ -146,6 +148,9 @@ def update(status) {
 
     def mode = status.result.night_light
     state.mode = mode
+    
+    def connectionStatus = status.connectionStatus ?: "unknown"
+    device.sendEvent(name: "connectionStatus", value: connectionStatus)
 
     sendLevelEvent(mode)
     device.sendEvent(name: "mode", value: mode)

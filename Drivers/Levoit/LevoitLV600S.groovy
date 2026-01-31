@@ -53,6 +53,7 @@ metadata {
             attribute "warmMistLevel", "number"                        // Warm mist level (0-3)
             attribute "warmMistEnabled", "string"                      // Warm mist status (on/off)
             attribute "info", "string"                                 // HTML info
+            attribute "connectionStatus", "string"                     // Connection status (online/offline)
 
             command "setMode", [[name:"Mode*", type: "ENUM", description: "Mode", constraints: ["manual", "auto", "sleep"] ] ]
             command "setMistLevel", [[name:"Level*", type: "NUMBER", description: "Mist Level (1-9)" ] ]
@@ -207,7 +208,7 @@ def update() {
         if (checkHttpResponse("update", resp)) {
             def status = resp.data.result
             if (status == null) {
-                logError "No status returned from getHumidifierStatus: ${resp.msg}"
+                logError "No status returned from getHumidifierStatus: ${resp.data}"
             } else {
                 result = update(status, null)
             }
@@ -224,6 +225,9 @@ def update(status, nightLight) {
         logError "No status result in update"
         return
     }
+    
+    def connectionStatus = status.connectionStatus ?: "unknown"
+    handleEvent("connectionStatus", connectionStatus)
     
     updateFromStatus(result)
 }
