@@ -221,6 +221,28 @@ def setNightLightBrightness(brightness) {
     }
 }
 
+def update() {
+    logDebug "update()"
+
+    def result = null
+
+    parent.sendBypassRequest(device, [
+        "method": "getHumidifierStatus",
+        "source": "APP",
+        "data": [:]
+    ]) { resp ->
+        if (checkHttpResponse("update", resp)) {
+            def status = resp.data.result
+            if (status == null) {
+                logError "No status returned from getHumidifierStatus: ${resp.msg}"
+            } else {
+                result = update(status, null)
+            }
+        }
+    }
+    return result
+}
+
 def update(status, nightLight) {
     logDebug "update(status, nightLight)"
 
