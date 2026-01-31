@@ -234,7 +234,7 @@ def update() {
         if (checkHttpResponse("update", resp)) {
             def status = resp.data.result
             if (status == null) {
-                logError "No status returned from getHumidifierStatus: ${resp.msg}"
+                logError "No status returned from getHumidifierStatus: ${resp.data}"
             } else {
                 result = update(status, null)
             }

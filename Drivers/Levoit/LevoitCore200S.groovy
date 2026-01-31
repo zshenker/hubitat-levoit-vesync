@@ -295,7 +295,7 @@ def update() {
 			{
                 def status = resp.data.result
                 if (status == null)
-                    logError "No status returned from getPurifierStatus: ${resp.msg}"
+                    logError "No status returned from getPurifierStatus: ${resp.data}"
                 else
                     result = update(status, nightLight)                
 			}
