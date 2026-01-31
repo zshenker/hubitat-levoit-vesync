@@ -42,6 +42,7 @@ metadata {
             capability "Switch"
             capability "Actuator"
             capability "RelativeHumidityMeasurement"
+            capability "Refresh"
 
             attribute "mode", "string"                                 // Humidifier mode (manual/auto/sleep)
             attribute "mistLevel", "number"                            // Mist level (1-9)
@@ -193,23 +194,21 @@ def setWarmMistLevel(level) {
     }
 }
 
-def update() {
-    logDebug "update()"
+def update(status, nightLight) {
+    logDebug "update(status, nightLight)"
 
-    parent.sendBypassRequest(device, [
-        "method": "getHumidifierStatus",
-        "source": "APP",
-        "data": [:]
-    ]) { resp ->
-        if (checkHttpResponse("update", resp)) {
-            def result = resp.data.result?.result
-            if (result == null) {
-                logError "No status returned from getHumidifierStatus: ${resp.data}"
-            } else {
-                updateFromStatus(result)
-            }
-        }
+    def result = status?.result
+    if (result == null) {
+        logError "No status result in update"
+        return
     }
+    
+    updateFromStatus(result)
+}
+
+def refresh() {
+    logDebug "refresh()"
+    parent?.updateDevices()
 }
 
 private void updateFromStatus(status) {
@@ -322,18 +321,23 @@ private String mapModeToApiMode(mode) {
 def handlePower(on) {
     def result = false
 
-    // LV600S uses powerSwitch and switchIdx instead of enabled and id
-    parent.sendBypassRequest(device, [
-        data: [powerSwitch: on ? 1 : 0, switchIdx: 0],
-        "method": "setSwitch",
-        "source": "APP"
-    ]) { resp ->
-        if (checkHttpResponse("handlePower", resp)) {
-            def operation = on ? "ON" : "OFF"
-            logDebug "turned ${operation}"
-            result = true
+    try {
+        // LV600S uses powerSwitch and switchIdx instead of enabled and id
+        parent.sendBypassRequest(device, [
+            data: [powerSwitch: on ? 1 : 0, switchIdx: 0],
+            "method": "setSwitch",
+            "source": "APP"
+        ]) { resp ->
+            if (checkHttpResponse("handlePower", resp)) {
+                def operation = on ? "ON" : "OFF"
+                logDebug "turned ${operation}"
+                result = true
+            }
         }
+    } catch (Exception e) {
+        logError "Error in handlePower: ${e.message}"
     }
+    
     return result
 }
 

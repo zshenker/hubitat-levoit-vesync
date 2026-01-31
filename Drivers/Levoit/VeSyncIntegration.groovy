@@ -72,12 +72,12 @@ def updated() {
 
 	initialize()
 
-    runIn(5 * (int)settings.refreshInterval, timeOutLevoit)
+    runIn(5 * (int)settings.refreshInterval, "timeOutLevoit")
 
     updateDevices()
 
     // Turn off debug log in 30 minutes
-    if (settings?.debugOutput) runIn(1800, logDebugOff);
+    if (settings?.debugOutput) runIn(1800, "logDebugOff")
 }
 
 def uninstalled() {
@@ -140,13 +140,14 @@ private Boolean login()
 			{
                 state.token = resp.data.result.token
                 state.accountID = resp.data.result.accountID
+                result = true
 			}
 		}
 		return result
 	}
 	catch (e)
 	{
-        logError e.toString();
+        logError "Login failed: ${e.toString()}"
 		checkHttpResponse("login", e.getResponse())
 		return false
 	}
@@ -472,7 +473,7 @@ private Boolean getDevices() {
 
                 state.deviceList = newList
 
-                runIn(5 * (int)settings.refreshInterval, timeOutLevoit)
+                runIn(5 * (int)settings.refreshInterval, "timeOutLevoit")
                 
                 updateDevices()
 
