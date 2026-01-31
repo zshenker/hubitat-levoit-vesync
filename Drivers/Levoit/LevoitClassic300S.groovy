@@ -302,7 +302,7 @@ private void updateFromStatus(status) {
 private void updateInfoDisplay(status) {
     def html = ""
     
-    if (status.humidity != null) {
+    if (status?.humidity != null) {
         html += "Humidity: ${status.humidity}%<br>"
     }
     
@@ -311,7 +311,7 @@ private void updateInfoDisplay(status) {
     }
     
     html += "Mist Level: ${state.mistLevel ?: 'N/A'}<br>"
-    html += "Water: ${status.water_lacks ? 'Low' : 'OK'}"
+    html += "Water: ${status?.water_lacks ? 'Low' : 'OK'}"
     
     handleEvent("info", html)
 }

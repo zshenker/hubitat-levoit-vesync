@@ -270,20 +270,20 @@ private void updateFromStatus(status) {
 private void updateInfoDisplay(status) {
     def html = ""
     
-    if (status.humidity != null) {
+    if (status?.humidity != null) {
         html += "Humidity: ${status.humidity}%<br>"
     }
     
-    if (status.targetHumidity != null) {
+    if (status?.targetHumidity != null) {
         html += "Target: ${status.targetHumidity}%<br>"
     }
     
     html += "Mist Level: ${state.mistLevel ?: 'N/A'}<br>"
     
-    def waterLacks = (status.waterLacksState == 1)
+    def waterLacks = (status?.waterLacksState == 1)
     html += "Water: ${waterLacks ? 'Low' : 'OK'}<br>"
     
-    if (status.warmLevel != null && status.warmLevel > 0) {
+    if (status?.warmLevel != null && status.warmLevel > 0) {
         html += "Warm Mist: Level ${status.warmLevel}"
     }
     
