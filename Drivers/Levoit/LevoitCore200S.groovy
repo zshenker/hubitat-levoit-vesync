@@ -55,8 +55,9 @@ metadata {
 
             attribute "filter", "number";                              // Filter status (0-100%)
             attribute "mode", "string";                                // Purifier mode 
-            
+
             attribute "info", "string";                               // HTML
+            attribute "connectionStatus", "string";                    // Connection status (online/offline)
 
             command "setDisplay", [[name:"Display*", type: "ENUM", description: "Display", constraints: ["on", "off"] ] ]
             command "setSpeed", [[name:"Speed*", type: "ENUM", description: "Speed", constraints: ["off", "low", "medium", "high"] ] ]
@@ -309,12 +310,15 @@ def update(status, nightLight)
 
     logDebug status
 
+    def connectionStatus = status.connectionStatus ?: "unknown"
+    
     state.speed = mapIntegerToSpeed(status.result.level)
     state.mode = status.result.mode
 
     device.sendEvent(name: "switch", value: status.result.enabled ? "on" : "off")
     device.sendEvent(name: "mode", value: status.result.mode)
     device.sendEvent(name: "filter", value: status.result.filter_life)
+    device.sendEvent(name: "connectionStatus", value: connectionStatus)
 
     switch(state.mode)
     {

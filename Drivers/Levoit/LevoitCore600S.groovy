@@ -61,6 +61,7 @@ metadata {
             attribute "aqiColor", "string";                            // AQI HTML color
             
             attribute "info", "string";                               // HTML
+            attribute "connectionStatus", "string";                    // Connection status (online/offline)
 
             command "setDisplay", [[name:"Display*", type: "ENUM", description: "Display", constraints: ["on", "off"] ] ]
             command "setSpeed", [[name:"Speed*", type: "ENUM", description: "Speed", constraints: ["off", "sleep", "auto", "low", "medium", "high", "max"] ] ]
@@ -439,8 +440,11 @@ def update(status, nightLight)
     def mode = status.result.mode
     def auto_mode = status.result.configuration.auto_preference.type
     def room_size = status.result.configuration.auto_preference.room_size
+    def connectionStatus = status.connectionStatus ?: "unknown"
 
     handleEvent("switch", status.result.enabled ? "on" : "off")
+    handleEvent("connectionStatus", connectionStatus)
+    
     if (state.mode == null || mode != state.mode) 
         handleEvent("mode",   status.result.mode)
     if (state.auto_mode == null || auto_mode != state.auto_mode) 
