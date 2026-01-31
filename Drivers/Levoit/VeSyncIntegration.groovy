@@ -38,8 +38,8 @@ import java.security.MessageDigest
 metadata {
     definition(
         name: "VeSync Integration",
-        namespace: "NiklasGustafsson",
-        author: "Niklas Gustafsson and elfege (contributor)",
+        namespace: "zshenker",
+        author: "Niklas Gustafsson and elfege (contributor) and Zac Shenker (contributor)",
         description: "Integrates VeSync devices with Hubitat Elevation",
         category: "My Apps",
         iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",

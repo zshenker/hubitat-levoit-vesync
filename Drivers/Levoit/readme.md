@@ -10,7 +10,7 @@ The purifiers show up as fans, switches, and dimmers. And there's also an 'info'
 
 ## Installation
 
-There are six files to install, all as Hubitat drivers. Use the Hubitat package manager to install the drivers. The manifest file is located at: https://raw.githubusercontent.com/NiklasGustafsson/Hubitat/master/levoitManifest.json.
+There are six files to install, all as Hubitat drivers. Use the Hubitat package manager to install the drivers. The manifest file is located at: https://raw.githubusercontent.com/zshenker/Hubitat/master/levoitManifest.json.
 
 If you do not use the HPM, then copy and paste into the Hubitat UI under driver code. Remember to use the 'Raw' view of the code in GitHub before copying. You only need to install drivers for the kinds of devices you have, plus the integration driver, which is the parent device. Not that the 200S requires two drivers, since there's also night light to control, which shows up as its own switch device.
 

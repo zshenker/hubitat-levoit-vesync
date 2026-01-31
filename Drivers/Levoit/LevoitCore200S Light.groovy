@@ -39,7 +39,7 @@ SOFTWARE.
 metadata {
     definition(
         name: "Levoit Core200S Air Purifier Light",
-        namespace: "NiklasGustafsson",
+        namespace: "zshenker",
         author: "Niklas Gustafsson",
         description: "Supports controlling the Levoit 200S / 300S air purifiers' night light capability",
         category: "My Apps",

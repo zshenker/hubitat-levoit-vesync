@@ -39,8 +39,8 @@ SOFTWARE.
 metadata {
     definition(
         name: "Levoit Core600S Air Purifier",
-        namespace: "NiklasGustafsson",
-        author: "Niklas Gustafsson and elfege (contributor)",
+        namespace: "zshenker",
+        author: "Niklas Gustafsson and elfege (contributor) and Zac Shenker (contributor)",
         description: "Supports controlling the Levoit 600S air purifier",
         category: "My Apps",
         iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
