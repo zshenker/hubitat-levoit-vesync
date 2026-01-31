@@ -197,7 +197,8 @@ def Boolean updateDevices()
                     // Check for offline device code
                     if (resp.data.code == -11300030) {
                         logDebug "Device ${dni} is offline (code: -11300030)"
-                        connectionStatus = "offline"
+                        status.connectionStatus = "offline"
+                        result = dev.update(status, null)
                     }
                     
                     def status = resp.data.result
