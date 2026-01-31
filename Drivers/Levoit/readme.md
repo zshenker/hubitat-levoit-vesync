@@ -1,25 +1,27 @@
-## VeSync: Levoit Air Purifier Drivers
+## VeSync: Levoit Air Purifier and Humidifier Drivers
 
-These drivers add support for Levoit Air Core 200S, 300S, 400S, and 600S air purifiers. Installing the integration driver, and configuring with the VeSync account information will automatically discover existing equipment, as long as they have been setup with a VeSync account using the VeSync app.
+These drivers add support for Levoit Air Core 200S, 300S, 400S, and 600S air purifiers, as well as Levoit Classic 300S and LV600S humidifiers. Installing the integration driver, and configuring with the VeSync account information will automatically discover existing equipment, as long as they have been setup with a VeSync account using the VeSync app.
 
-Equipment found will be added as child devices under the VeSync Integration device, and will have the same name and initial label as what is configures in the VeSync account. Pressing 'Resync Equipment' will discover all newly added devices.
+Equipment found will be added as child devices under the VeSync Integration device, and will have the same name and initial label as what is configured in the VeSync account. Pressing 'Resync Equipment' will discover all newly added devices.
 
-When discovered, a Core 200S purifier  will result in two devices being installed in Hubitat, one to control the operation of the purifier fan and display, one to control the night light. A Core 300S, 400S, or 600S purifier will result in one device being installed.
+When discovered, a Core 200S purifier will result in two devices being installed in Hubitat, one to control the operation of the purifier fan and display, one to control the night light. A Core 300S, 400S, or 600S purifier will result in one device being installed. Humidifiers (Classic 300S and LV600S) will each result in one device being installed.
 
-The purifiers show up as fans, switches, and dimmers. And there's also an 'info' attribute that is useful for displaying in a dashboard tile as HTML. The child devices are actuators, so their public methods may be invoked from rules.
+The purifiers show up as fans, switches, and dimmers. The humidifiers show up as switches with humidity measurement capabilities. And there's also an 'info' attribute that is useful for displaying in a dashboard tile as HTML. The child devices are actuators, so their public methods may be invoked from rules.
 
 ## Installation
 
-There are six files to install, all as Hubitat drivers. Use the Hubitat package manager to install the drivers. The manifest file is located at: https://raw.githubusercontent.com/zshenker/Hubitat/master/levoitManifest.json.
+There are eight driver files to install, all as Hubitat drivers. Use the Hubitat package manager to install the drivers. The manifest file is located at: https://raw.githubusercontent.com/zshenker/Hubitat/master/levoitManifest.json.
 
-If you do not use the HPM, then copy and paste into the Hubitat UI under driver code. Remember to use the 'Raw' view of the code in GitHub before copying. You only need to install drivers for the kinds of devices you have, plus the integration driver, which is the parent device. Not that the 200S requires two drivers, since there's also night light to control, which shows up as its own switch device.
+If you do not use the HPM, then copy and paste into the Hubitat UI under driver code. Remember to use the 'Raw' view of the code in GitHub before copying. You only need to install drivers for the kinds of devices you have, plus the integration driver, which is the parent device. Note that the 200S requires two drivers, since there's also night light to control, which shows up as its own switch device.
 
 1. VeSyncIntegration.groovy -- this is the parent device. It represents the VeSync account.<br/> Configure with account email and password, plus a refresh (polling) interval.
-2. LevoitCore200S.groovy -- the driver for the 200S purifier.
+2. LevoitCore200S.groovy -- the driver for the 200S air purifier.
 3. LevoitCore200S Light.groovy -- the driver for the 200S night light.
-4. LevoitCore400S.groovy -- the driver for the 300S purifier.
-5. LevoitCore400S.groovy -- the driver for the 400S purifier.
-6. LevoitCore600S.groovy -- the driver for the 600S purifier.
+4. LevoitCore300S.groovy -- the driver for the 300S air purifier.
+5. LevoitCore400S.groovy -- the driver for the 400S air purifier.
+6. LevoitCore600S.groovy -- the driver for the 600S air purifier.
+7. LevoitClassic300S.groovy -- the driver for the Classic 300S humidifier.
+8. LevoitLV600S.groovy -- the driver for the LV600S humidifier.
 
 After installing the drivers, add a virtual device with the VeSync Integration driver, then configure it with your credentials and the desired data refresh internal, and hit 'Save Preferences.' Once that is done, press the 'Resync Equipment' button on the device page and if your credentials are correct, you should see child devices come online. 
 
@@ -86,6 +88,39 @@ The devices themselves have more attributes:
 |info|HTML TEXT|HTML suitable for displaying in a Hubitat dashboard tile.|
 |switch|on,off|Whether the purifier is turned on or off.|
 |speed|off,sleep,low,medium,high,max|The fan speed.|
+
+### Classic 300S Humidifier
+
+|event|Values|Description|
+| --- | --- | --- |
+|humidity|0-100|Current relative humidity percentage.|
+|targetHumidity|30-80|Target humidity level in auto mode.|
+|mode|manual,auto,sleep|The current mode of the humidifier.|
+|mistLevel|1-9|Current mist output level.|
+|waterLacks|ok,low|Water tank status.|
+|displayOn|on,off|Display/indicator light status.|
+|autoStop|on,off|Automatic stop when target humidity is reached.|
+|warmMistLevel|0-3|Warm mist level (0=off, 1-3=heating levels).|
+|warmMistEnabled|on,off|Whether warm mist heating is enabled.|
+|nightLightBrightness|0-100|Night light brightness level.|
+|info|HTML TEXT|HTML suitable for displaying in a Hubitat dashboard tile.|
+|switch|on,off|Whether the humidifier is turned on or off.|
+
+### LV600S Humidifier
+
+|event|Values|Description|
+| --- | --- | --- |
+|humidity|0-100|Current relative humidity percentage.|
+|targetHumidity|30-80|Target humidity level in auto mode.|
+|mode|manual,auto,sleep|The current mode of the humidifier.|
+|mistLevel|1-9|Current mist output level.|
+|waterLacks|ok,low|Water tank status.|
+|displayOn|on,off|Display screen status.|
+|autoStop|on,off|Automatic stop when target humidity is reached.|
+|warmMistLevel|0-3|Warm mist level (0=off, 1-3=heating levels).|
+|warmMistEnabled|on,off|Whether warm mist heating is enabled.|
+|info|HTML TEXT|HTML suitable for displaying in a Hubitat dashboard tile.|
+|switch|on,off|Whether the humidifier is turned on or off.|
 
 ### Acknowledgements
 
