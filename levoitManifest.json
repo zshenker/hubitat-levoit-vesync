@@ -58,10 +58,10 @@
       "required": false
     },
     {
-      "id": "9f3a908f-ba16-430a-b524-6597651f2811",
-      "name": "Levoit Core600S Air Purifier",
+      "id": "b56d3ac3-f5d9-4ade-93be-76e1bc15ea12",
+      "name": "Levoit LV600S Humidifier",
       "namespace": "zshenker",
-      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitCore600S.groovy",
+      "location": "https://raw.githubusercontent.com/zshenker/hubitat-levoit-vesync/refs/heads/master/Drivers/Levoit/LevoitLV600S.groovy",
       "required": false
     }
   ]
